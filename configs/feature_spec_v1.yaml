@@ -1,0 +1,28 @@
+version: 1
+spec_name: "network_flow_v1"
+window_minutes: 5
+
+numerical_features:
+  - duration_ms
+  - src_bytes
+  - dst_bytes
+  - total_packets
+  - bytes_per_second
+  - packets_per_second
+  - failed_auth_count
+
+categorical_features:
+  - protocol
+  - action
+  - service
+
+hashed_features:
+  - name: dst_port_hash
+    source_field: dst_port
+    num_bins: 16
+  - name: src_port_hash
+    source_field: src_port
+    num_bins: 16
+
+flags:
+  include_mask_vector: true

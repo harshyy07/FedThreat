@@ -1,0 +1,69 @@
+# Usage:  python scripts/generate_certs.py --out certs && docker compose -f docker/compose.yaml up --build
+# Each container mounts ONLY its own key material. certs/private_ca/ca.key is never mounted.
+# NOTE: Docker path is not exercised by the automated tests; scripts/run_live_demo.py runs the same
+# stack (real TLS + required client certs) without Docker.
+x-client: &client
+  build: {context: .., dockerfile: docker/client.Dockerfile}
+  depends_on: [server]
+  environment: &cenv
+    SERVER_URL: https://server:8443
+    NUM_ORGS: "9"
+    CERT_DIR: /certs
+services:
+  server:
+    build: {context: .., dockerfile: docker/server.Dockerfile}
+    environment:
+      FEDTHREAT_SPEC_HASH: "${FEDTHREAT_SPEC_HASH:?run scripts/print_spec_hash.py first}"
+      FEDTHREAT_REGISTRY: /certs/enrolled_orgs.json
+      FEDTHREAT_INITIAL_PARAMS: /certs/initial_params.npz
+      FEDTHREAT_MIN_COHORTS: "3"
+      FEDTHREAT_NOISE_MULTIPLIER: "0.0"   # 0 = DP off. Set >0 to enable DP + budget enforcement.
+    volumes: ["../certs/server:/certs:ro"]
+    networks: [fed]
+  org0:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "0"}
+    volumes: ["../certs/org0:/certs:ro"]
+    networks: [fed]
+  org1:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "1"}
+    volumes: ["../certs/org1:/certs:ro"]
+    networks: [fed]
+  org2:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "2"}
+    volumes: ["../certs/org2:/certs:ro"]
+    networks: [fed]
+  org3:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "3"}
+    volumes: ["../certs/org3:/certs:ro"]
+    networks: [fed]
+  org4:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "4"}
+    volumes: ["../certs/org4:/certs:ro"]
+    networks: [fed]
+  org5:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "5"}
+    volumes: ["../certs/org5:/certs:ro"]
+    networks: [fed]
+  org6:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "6"}
+    volumes: ["../certs/org6:/certs:ro"]
+    networks: [fed]
+  org7:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "7"}
+    volumes: ["../certs/org7:/certs:ro"]
+    networks: [fed]
+  org8:
+    <<: *client
+    environment: {<<: *cenv, ORG_ID: "8"}
+    volumes: ["../certs/org8:/certs:ro"]
+    networks: [fed]
+networks:
+  fed: {}

@@ -1,0 +1,10 @@
+# epsilon-vs-utility. epsilon = org-level, delta=1e-5, accumulated over all rounds (RDP accountant).
+# secure_sum: one cohort of 15, noise calibrated assuming 12 honest noising clients.
+# cohort_trimmed: 3 cohorts of 5, noise calibrated assuming 4 honest noising clients per cohort.
+name: dp_sweep_quick
+plot: dp
+seeds: [0, 1]
+base: {n_orgs: 15, rounds: 40, alpha: 1.0}
+runs:
+  - grid: {aggregator: [secure_sum], clip: [1.0], sigma: [0, 0.5, 1, 2, 4, 8, 16], honest_min: [12]}
+  - grid: {aggregator: [cohort_trimmed], cohort_size: [5], clip: [1.0], sigma: [0, 0.5, 1, 2, 4, 8, 16], honest_min: [4]}

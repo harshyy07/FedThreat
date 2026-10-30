@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.venv/
+runs/
+data/
+# NEVER commit key material
+certs/
+*.key
+*.pem
+identity*.key
+threat_detection_model_v3*
+

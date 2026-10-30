@@ -1,0 +1,8 @@
+# Does federation help orgs detect an attack family only ONE org has seen, and what does robustness cost?
+name: headline
+plot: headline
+seeds: [0, 1, 2, 3, 4]
+base: {n_orgs: 9, rounds: 40, local_epochs: 2, clip: 1.0}
+runs:
+  - grid: {mode: [local, central], alpha: [0.1, 1.0]}
+  - grid: {mode: [federated], aggregator: [fedavg, secure_sum, cohort_trimmed, cohort_median, median, krum], alpha: [0.1, 1.0]}

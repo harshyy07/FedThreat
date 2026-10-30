@@ -1,0 +1,9 @@
+# Aggregator x attack x number of malicious orgs. 15 orgs => 5 cohorts of 3 (median tolerates <= 2 contaminated cohorts).
+name: defense_matrix
+plot: attacks
+seeds: [0, 1, 2]
+base: {n_orgs: 15, rounds: 40, alpha: 1.0, clip: 1.0, attack_scale: 20.0}
+runs:
+  - grid: {aggregator: [fedavg, fedavg_clip, median, trimmed_mean, krum, secure_sum, cohort_trimmed, cohort_median], attack: [none], num_malicious: [0]}
+  - grid: {aggregator: [fedavg, fedavg_clip, median, trimmed_mean, krum, secure_sum, cohort_trimmed, cohort_median],
+           attack: [sign_flip, gaussian, label_flip, backdoor, lie], num_malicious: [1, 2, 3, 4]}
